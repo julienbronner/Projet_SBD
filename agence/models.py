@@ -55,10 +55,8 @@ class billet(models.Model):
 	prix_billet=models.DecimalField(max_digits=6, decimal_places=2,null=False)
 	depart_ville = models.CharField(max_length=200,null=False)
 	depart_date = models.DateTimeField(null=False)
-	depart_heure = models.TimeField(null=False)
 	arrivee_ville = models.CharField(max_length=200,null=False)
 	arrivee_date = models.DateTimeField(null=False)
-	arrivee_heure = models.TimeField(null=False)
 
 	def __str__(self):
 		return str(self.numero_billet)
