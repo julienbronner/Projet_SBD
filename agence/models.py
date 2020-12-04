@@ -35,8 +35,8 @@ class client(models.Model):
     nom = models.CharField(null=False)
     prenom = models.CharField(null=False)
     confirmation = models.BooleanField(null=False)
-	majorite = models.BooleanField(null=False)
-	numero_reduction = models.IntegerField(default=0)
+    majorite = models.BooleanField(null=False)
+    numero_reduction = models.IntegerField(default=0)
 
 class billet(models.Model):
 	numero_billet = models.IntegerField(null=False)
