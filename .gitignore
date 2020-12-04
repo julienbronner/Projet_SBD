@@ -2,5 +2,5 @@
 /.vscode/
 /oc-courses-decouvrez_django-6dbcf90/
 /agence/__pycache__/
+/agence/migrations/
 /agence_sncf/__pycache__/
-/agence/migrations
