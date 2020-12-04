@@ -27,7 +27,7 @@ class train(models.Model):
 	arrivée_ville = models.CharField(max_length=200,null=False)
 
 	def __str__(self):
-		return str(self.numero_train)
+		return str(self.numero_train) + " " + self.depart_ville + "-" + self.arrivée_ville
 
 class voiture(models.Model):
 	numero_de_serie_voiture = models.IntegerField(null=False)
