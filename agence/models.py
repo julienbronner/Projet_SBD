@@ -18,7 +18,7 @@ class client(models.Model):
 	#numero_reduction = models.IntegerField(default=0)	
 
 	def __str__(self):
-		return self.nom + self.prenom
+		return self.nom +" "+ self.prenom
 
 class train(models.Model):
 	numero_train = models.IntegerField(null=False)
