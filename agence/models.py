@@ -71,7 +71,12 @@ class reservation(models.Model):
 	#numero_place = models.IntegerField(null=False)
 	numero_voiture = models.IntegerField(null=False)
 	confirmation = models.BooleanField(null=False)
-	prix_total=models.DecimalField(max_digits=6, decimal_places=2,null=False)
+	#@property
+    #def PrixTot(self):
+    #    return relativedelta(self.birth_date.days, datetime.date.now()).years
+
+
+	#prix_total=models.DecimalField(max_digits=6, decimal_places=2,null=False)
     
 	def __str__(self):
 		return str(self.numero_reservation)
