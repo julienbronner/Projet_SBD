@@ -26,7 +26,7 @@ SECRET_KEY = 'a_x-8$!hqw55(^ff(ui#q5b*oesb@gi56d89f0#9m17kec!apg'
 DEBUG = True
 
 ALLOWED_HOSTS = []
-
+# ALLOWED_HOSTS = ['127.0.0.1']
 
 # Application definition
 
