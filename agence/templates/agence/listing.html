@@ -6,6 +6,7 @@
         <hr class="detail-separator">
     </div>
 
+    {% include 'agence/search_form.html' %} <!-- NEW -->
 
     {% if trains|length_is:"0" %}
     <div class="text-center">
@@ -16,7 +17,7 @@
     {% else %}
         {% for train in trains %}
             <div class="col-sm-4 text-center">
-                <h3>{{ train.depart_ville }} {{ train.arrivee_ville }}</h3>
+                <h3>{{train.depart_ville }} {{ train.arrivee_ville }}</h3>
             </div>
         {% endfor %}
     {% endif %}

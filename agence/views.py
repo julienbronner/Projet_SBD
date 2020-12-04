@@ -17,14 +17,23 @@ def listing(request):
     return render(request, 'agence/all_train.html', context)
 
 def search(request):
-    query = request.GET.get('query')
-    if not query:
-        trains = train.objects.all()
+    query_depart = request.GET.get('query_depart')
+    query_arrivee = request.GET.get('query_arrivee')
+    query_date = request.GET.get('query_date')
+    if query_date:
+        year, month, day = query_date.split('-')
+    if (not query_depart and not query_arrivee):
+        trains = billet.objects.all()
+    elif not query_arrivee:
+        trains = billet.objects.filter(depart_ville__icontains=query_depart)
+    elif not query_depart:
+        trains = billet.objects.filter(arrivee_ville__icontains=query_arrivee)
     else:
-        trains = train.objects.filter(depart_ville__icontains=query)
-    if not trains.exists():
-        trains = train.objects.filter(arrivee_ville__icontains=query)
-    title = "Résultats pour la requête %s"%query
+        trains = billet.objects.filter(depart_ville__icontains=query_depart, arrivee_ville__icontains=query_arrivee)
+    if query_date:
+        title = f"Trajets {query_depart}-{query_arrivee} le {day}/{month}/{year}"
+    else:
+        title = f"Trajets {query_depart}-{query_arrivee}"
     context = {
         'trains': trains,
         'title': title
