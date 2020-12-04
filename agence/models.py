@@ -58,7 +58,7 @@ class billet(models.Model):
 	arrivee_date = models.DateTimeField(null=False)
 
 	def __str__(self):
-		return str(self.numero_billet)
+		return str(self.numero_billet) + " " + self.depart_ville + "-" + self.arrivee_ville
 
 class reservation(models.Model):
 	numero_reservation = models.IntegerField(null=False)
