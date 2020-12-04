@@ -1,5 +1,7 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from .models import reduction, client, train, voiture, place, billet, reservation
+from django.db import transaction, IntegrityError
+from .forms import ClientForm, ParagraphErrorList
 
 def index(request):
     # template = loader.get_template('agence/index.html')
@@ -22,48 +24,114 @@ def detail(request, numero_billet):
         'arrivee_ville': billet1.arrivee_ville,
         'date_depart': billet1.depart_date,
         'date_arrivee': billet1.arrivee_date,
+        'numero_billet': billet1.numero_billet,
     }
-    # if request.method == 'POST':
-    #     form = ContactForm(request.POST, error_class=ParagraphErrorList)
-    #     if form.is_valid():
-    #         email = form.cleaned_data['email']
-    #         name = form.cleaned_data['name']
-    #         try:
-    #             with transaction.atomic():
-    #                 contact = Contact.objects.filter(email=email)
-    #                 if not contact.exists():
-    #                     # If a contact is not registered, create a new one.
-    #                     contact = Contact.objects.create(
-    #                         email=email,
-    #                         name=name
-    #                     )
-    #                 else :
-    #                     contact = contact.first()
+    if request.method == 'POST':
+        form = ClientForm(request.POST, error_class=ParagraphErrorList)
+        if form.is_valid():
+            email = form.cleaned_data['email']
+            name = form.cleaned_data['name']
+            firstname = form.cleaned_data['firstname']
+            preference = form.cleaned_data['preference']
+            try:
+                with transaction.atomic():
+                    client1 = client.objects.filter(email=email)
+                    if not client1.exists():
+                        context['message'] = "Vous n'êtes pas client chez nous"
+                        render(request, 'agence/desole.html', context)
+                        # return redirect(request.META['HTTP_REFERER'])# penser à rajouter un message
+                    else :
+                        client1 = client1.first()
 
-    #                 # If no album matches the id, it means the form must have been tweaked
-    #                 # so returning a 404 is the best solution.
-    #                 album = get_object_or_404(Album, id=album_id)
-    #                 booking = Booking.objects.create(
-    #                     contact=contact,
-    #                     album=album
-    #                 )
+                    # If no album matches the id, it means the form must have been tweaked
+                    # so returning a 404 is the best solution.
+                    voiture1 = voiture.objects.filter(numero_train=billet1.numero_train)
+                    numero_place = None
+                    numero_voiture = None
+                    for voiture_unique in voiture1:
+                        place1 = place.objects.filter(numero_de_serie_voiture = voiture_unique.numero_de_serie_voiture)
+                        for place_unique in place1:
+                            if place_unique.position == preference:
+                                numero_place = place_unique.numero_place
+                                numero_voiture = place_unique.numero_de_serie_voiture
+                                numero_train = voiture_unique.numero_train
+                                break
+                    if not numero_place:
+                        context['message'] = "Nous n'avons pas trouvé de place satisfaisant vos préférences"
+                        render(request, 'agence/desole.html', context)
+                        # return redirect(request.META['HTTP_REFERER']) # penser à rajouter un message
 
-    #                 # Make sure no one can book the album again.
-    #                 album.available = False
-    #                 album.save()
-    #                 context = {
-    #                     'album_title': album.title
-    #                 }
-    #                 return render(request, 'store/merci.html', context)
+                    reservation1 = reservation.objects.create(
+                        numero_reservation=1,
+                        numero_billet=billet1,
+                        numero_client=client1,
+                        numero_place=numero_place,
+                        numero_voiture=numero_voiture,
+                        confirmation=False,
+                    )
 
-    #         except IntegrityError:
-    #             form.errors['internal'] = "Une erreur interne est apparue. Merci de recommencer votre requête."
+                    context['numero_place'] =numero_place
+                    context['numero_voiture'] =numero_voiture
+                    context['preference'] =preference
+                    context['numero_train'] =numero_train
 
-    # else:
-    #     # GET method. Create a new form to be used in the template.
-    #     form = ContactForm()
+                    return render(request, 'agence/confirmation.html', context)
 
-    # context['form'] = form
+                    # try:
+                    #     client1 = client.objects.filter(email=email)
+                    #     if not client1.exists():
+                    #         context['message'] = "Vous n'êtes pas client chez nous"
+                    #         render(request, 'agence/desole.html', context)
+                    #         # return redirect(request.META['HTTP_REFERER'])# penser à rajouter un message
+                    #     else :
+                    #         client1 = client1.first()
+
+                    #     # If no album matches the id, it means the form must have been tweaked
+                    #     # so returning a 404 is the best solution.
+                    #     voiture1 = voiture.objects.filter(numero_train=billet1.numero_train)
+                    #     numero_place = None
+                    #     numero_voiture = None
+                    #     for voiture_unique in voiture1:
+                    #         place1 = place.objects.filter(numero_de_serie_voiture = voiture_unique.numero_de_serie_voiture)
+                    #         for place_unique in place1:
+                    #             if place_unique.position == preference:
+                    #                 numero_place = place_unique.numero_place
+                    #                 numero_voiture = place_unique.numero_de_serie_voiture
+                    #                 numero_train = voiture_unique.numero_train
+                    #                 break
+                    #     if not numero_place:
+                    #         context['message'] = "Nous n'avons pas trouvé de place satisfaisant vos préférences"
+                    #         render(request, 'agence/desole.html', context)
+                    #         # return redirect(request.META['HTTP_REFERER']) # penser à rajouter un message
+
+                    #     reservation1 = reservation.objects.create(
+                    #         numero_reservation=1,
+                    #         numero_billet=billet1,
+                    #         numero_client=client1,
+                    #         numero_place=numero_place,
+                    #         numero_voiture=numero_voiture,
+                    #         confirmation=False,
+                    #     )
+
+                    #     context['numero_place'] =numero_place
+                    #     context['numero_voiture'] =numero_voiture
+                    #     context['preference'] =preference
+                    #     context['numero_train'] =numero_train
+
+                    #     return render(request, 'agence/confirmation.html', context)
+                    # except:
+                    #     render(request, 'agence/desole.html', context)
+
+
+
+            except IntegrityError:
+                form.errors['internal'] = "Une erreur interne est apparue. Merci de recommencer votre requête."
+
+    else:
+        # GET method. Create a new form to be used in the template.
+        form = ClientForm()
+
+    context['form'] = form
     # context['errors'] = form.errors.items()
     return render(request, 'agence/detail.html', context)
 

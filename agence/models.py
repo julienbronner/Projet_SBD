@@ -13,6 +13,7 @@ class client(models.Model):
 	numero_client= models.IntegerField(null=False)
 	nom = models.CharField(max_length=200,null=False)
 	prenom = models.CharField(max_length=200,null=False)
+	email = models.EmailField(max_length=200, null=False)
 	majorite = models.BooleanField(null=False)
 	numero_reduction = models.ForeignKey(reduction,on_delete=models.CASCADE) #ok
 	#numero_reduction = models.IntegerField(default=0)	
