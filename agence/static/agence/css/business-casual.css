@@ -6,7 +6,8 @@
 
 body {
     font-family: "Open Sans","Helvetica Neue",Helvetica,Arial,sans-serif;
-    background: url('../img/theboatthatrocked.jpg') no-repeat center center fixed;
+    /* background: url('../img/theboatthatrocked.jpg') no-repeat center center fixed; */
+    background: url('../img/train.jepg') no-repeat center center fixed;
     -webkit-background-size: cover;
     -moz-background-size: cover;
     background-size: cover;
