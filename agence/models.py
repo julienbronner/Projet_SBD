@@ -13,7 +13,6 @@ class client(models.Model):
 	numero_client= models.IntegerField(null=False)
 	nom = models.CharField(max_length=200,null=False)
 	prenom = models.CharField(max_length=200,null=False)
-	confirmation = models.BooleanField(null=False)
 	majorite = models.BooleanField(null=False)
 	numero_reduction = models.ForeignKey(reduction,on_delete=models.CASCADE) #ok
 	#numero_reduction = models.IntegerField(default=0)	
@@ -24,7 +23,7 @@ class client(models.Model):
 class train(models.Model):
 	numero_train = models.IntegerField(null=False)
 	depart_ville = models.CharField(max_length=200,null=False)
-	arrivée_ville = models.CharField(max_length=200,null=False)
+	arrivee_ville = models.CharField(max_length=200,null=False)
 
 	def __str__(self):
 		return str(self.numero_train) + " " + self.depart_ville + "-" + self.arrivée_ville
@@ -71,9 +70,9 @@ class reservation(models.Model):
 	#numero_place = models.IntegerField(null=False)
 	numero_voiture = models.IntegerField(null=False)
 	confirmation = models.BooleanField(null=False)
-	#@property
-    #def PrixTot(self):
-    #    return relativedelta(self.birth_date.days, datetime.date.now()).years
+	@property
+	def PrixTot(self):
+		return relativedelta(self.birth_date.days, datetime.date.now()).years
 
 
 	#prix_total=models.DecimalField(max_digits=6, decimal_places=2,null=False)
