@@ -1,0 +1,10 @@
+{% extends 'agence/base.html' %}
+
+{% block content %}
+    <hr>
+    <h1 class="intro-text text-center">Merci !</h1>
+    <hr class="detail-separator">
+    <p>Votre train N° <em>{{ numero_train }}</em> a bien été réservé. Vous serez à la place {{numero_place}} côté {{preference}}, voiture {{numero_voiture}}.</p>
+    <p>Bon voyage jusu'à {{arrivee_ville}}</p>
+    <hr>
+{% endblock %}

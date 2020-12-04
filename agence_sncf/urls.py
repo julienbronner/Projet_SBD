@@ -21,6 +21,6 @@ from agence import views
 
 urlpatterns = [
     url(r'^$', views.index),
-    url(r'^agence/', include('agence.urls')),
+    url(r'^agence/', include('agence.urls', namespace = 'agence')),
     url(r'^admin/', admin.site.urls)
 ]

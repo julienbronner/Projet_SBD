@@ -1,0 +1,65 @@
+{% extends 'agence/base.html' %}
+
+{% block content %}
+
+<hr>
+<h1 class="intro-text text-center">{{depart_ville }} - {{ arrivee_ville }}</h1>
+<hr class="detail-separator">
+
+<div class="col-md-6">
+  <div style="margin-bottom:45px">
+    <h2 class="text-center artist_name">Heure de départ</h2>
+    <p>{{ date_depart }}</p>
+  </div>
+  <div style="margin-bottom:45px">
+    <h2 class="text-center artist_name">Heure d'arrivée</h2>
+    <p>{{ date_arrivee }}</p>
+  </div>
+</div>
+
+
+<form class="form-inline" action="{% url 'agence:detail' numero_billet=numero_billet %}" method="post">
+  {% csrf_token %}
+  <div class="form-group">
+    <label for="name" class="control-label">Nom</label>
+    <!-- <input type="text" name="name" value="" id="name"> -->
+    {{ form.name }}
+  </div>
+  <div class="form-group">
+    <label for="firstname" class="control-label">Prénom</label>
+    <!-- <input type="text" name="firstname" value="" id="firstname"> -->
+    {{ form.firstname }}
+  </div>
+  <div class="form-group">
+    <label for="email" class="control-label">E-mail</label>
+    <!-- <input type="text" name="email" value="" id="email"> -->
+    {{ form.email }}
+  </div>
+  <div class="form-group">
+    <label for="preference">Préférence de siège</label>
+    <!-- <select class="form-control" id="preference">
+      <option>Fenetre</option>
+      <option>Couloir</option>
+    </select> -->
+    {{ form.preference }}
+  </div>
+  <!-- <div class="form-check">
+    <input type="checkbox" class="form-check-input" id="majorite">
+    <label class="form-check-label" for="majorite">Etes-vous majeur ?</label>
+  </div> -->
+  <!-- <input type="hidden" class="hidden" value="{{ album_id }}" name="album_id"> -->
+
+  <button type="submit" class="btn btn-success">Réserver</button>
+</form>
+
+{% if errors %}
+<div>
+  {% for key, error in errors %}
+  {% autoescape off %}
+    {{ error }}
+  {% endautoescape %}
+  {% endfor %}
+</div>
+{% endif %}
+
+{% endblock %}

@@ -13,12 +13,13 @@ class client(models.Model):
 	numero_client= models.IntegerField(null=False)
 	nom = models.CharField(max_length=200,null=False)
 	prenom = models.CharField(max_length=200,null=False)
+	email = models.EmailField(max_length=200, null=False)
 	majorite = models.BooleanField(null=False)
 	numero_reduction = models.ForeignKey(reduction,on_delete=models.CASCADE) #ok
 	#numero_reduction = models.IntegerField(default=0)	
 
 	def __str__(self):
-		return self.nom + self.prenom
+		return self.nom +" "+ self.prenom
 
 class train(models.Model):
 	numero_train = models.IntegerField(null=False)
@@ -26,7 +27,7 @@ class train(models.Model):
 	arrivee_ville = models.CharField(max_length=200,null=False)
 
 	def __str__(self):
-		return str(self.numero_train) + " " + self.depart_ville + "-" + self.arrivée_ville
+		return str(self.numero_train) + " " + self.depart_ville + "-" + self.arrivee_ville
 
 class voiture(models.Model):
 	numero_de_serie_voiture = models.IntegerField(null=False)
@@ -58,7 +59,7 @@ class billet(models.Model):
 	arrivee_date = models.DateTimeField(null=False)
 
 	def __str__(self):
-		return str(self.numero_billet)
+		return str(self.numero_billet) + " " + self.depart_ville + "-" + self.arrivee_ville
 
 class reservation(models.Model):
 	numero_reservation = models.IntegerField(null=False)
