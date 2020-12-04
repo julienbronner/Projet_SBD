@@ -17,7 +17,7 @@
     {% else %}
         {% for train in trains %}
             <div class="col-sm-4 text-center">
-                <h3>{{train.depart_ville }} {{ train.arrivee_ville }}</h3>
+                <h3><a href="{% url 'agence:detail' numero_billet=train.numero_billet %}">{{train.depart_ville }} {{ train.arrivee_ville }} {{ train.depart_date }}</a></h3>
             </div>
         {% endfor %}
     {% endif %}

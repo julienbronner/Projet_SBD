@@ -1,0 +1,20 @@
+{% extends 'agence/base.html' %}
+
+{% block content %}
+
+<hr>
+<h1 class="intro-text text-center">{{depart_ville }} - {{ arrivee_ville }}</h1>
+<hr class="detail-separator">
+
+<div class="col-md-6">
+  <div style="margin-bottom:45px">
+    <h2 class="text-center artist_name">Heure de départ</h2>
+    <p>{{ date_depart }}</p>
+  </div>
+  <div style="margin-bottom:45px">
+    <h2 class="text-center artist_name">Heure d'arrivée</h2>
+    <p>{{ date_arrivee }}</p>
+  </div>
+</div>
+
+{% endblock %}
